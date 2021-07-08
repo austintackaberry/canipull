@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	DefaultAzureCfgPath string = "/etc/kubernetes/azure.json"
+	DefaultAzureCfgPath string = "/etc/kubernetes/conf/kube-cloud-config"
 )
 
 var (
