@@ -1,4 +1,4 @@
-module github.com/yangl900/canipull
+module github.com/austintackaberry/canipull
 
 go 1.15
 

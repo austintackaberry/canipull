@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/yangl900/canipull/pkg/log"
+	"github.com/austintackaberry/canipull/pkg/log"
 
 	"github.com/Azure/go-autorest/autorest/adal"
 

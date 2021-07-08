@@ -9,12 +9,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yangl900/canipull/pkg/authorizer"
-	"github.com/yangl900/canipull/pkg/utils"
+	"github.com/austintackaberry/canipull/pkg/authorizer"
+	"github.com/austintackaberry/canipull/pkg/utils"
 
 	az "github.com/Azure/go-autorest/autorest/azure"
-	"github.com/yangl900/canipull/pkg/exitcode"
-	"github.com/yangl900/canipull/pkg/log"
+	"github.com/austintackaberry/canipull/pkg/exitcode"
+	"github.com/austintackaberry/canipull/pkg/log"
 	"k8s.io/legacy-cloud-providers/azure"
 
 	flag "github.com/spf13/pflag"
@@ -119,7 +119,7 @@ func validateMsiAuth(ctx context.Context, acr string, cfg azure.Config, logger *
 	logger.V(9).Info("ARM access token: %s", token)
 
 	te := authorizer.NewTokenExchanger()
-	acrToken, err := te.ExchangeACRAccessToken(token, acr)
+	acrToken, err := te.ExchangeACRAccessToken(ctx, token, acr)
 	if err != nil {
 		logger.V(2).Info("Validating image pull permission: FAILED")
 		logger.V(2).Info("ACR %s rejected token exchange: %s", acr, err)
@@ -150,7 +150,7 @@ func validateServicePrincipalAuth(ctx context.Context, acr string, cfg azure.Con
 	logger.V(9).Info("ARM access token: %s", token)
 
 	te := authorizer.NewTokenExchanger()
-	acrToken, err := te.ExchangeACRAccessToken(token, acr)
+	acrToken, err := te.ExchangeACRAccessToken(ctx, token, acr)
 	if err != nil {
 		logger.V(2).Info("Validating image pull permission: FAILED")
 		logger.V(2).Info("ACR %s rejected token exchange: %s", acr, err)

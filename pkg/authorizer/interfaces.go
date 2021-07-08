@@ -1,6 +1,10 @@
 package authorizer
 
-import "github.com/Azure/msi-acrpull/pkg/authorizer/types"
+import (
+	"context"
+
+	"github.com/Azure/msi-acrpull/pkg/authorizer/types"
+)
 
 //go:generate sh -c "mockgen github.com/Azure/msi-acrpull/pkg/authorizer Interface,ManagedIdentityTokenRetriever,ACRTokenExchanger > ./mock_$GOPACKAGE/interfaces.go"
 
@@ -11,5 +15,5 @@ type ManagedIdentityTokenRetriever interface {
 
 // ACRTokenExchanger is the interface to exchange an ACR access token.
 type ACRTokenExchanger interface {
-	ExchangeACRAccessToken(armToken types.AccessToken, acrFQDN string) (types.AccessToken, error)
+	ExchangeACRAccessToken(ctx context.Context, armToken types.AccessToken, acrFQDN string) (types.AccessToken, error)
 }

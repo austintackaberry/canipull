@@ -1,6 +1,7 @@
 package authorizer
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/Azure/msi-acrpull/pkg/authorizer/types"
+	"github.com/austintackaberry/canipull/pkg/log"
 )
 
 // TokenExchanger is an instance of ACRTokenExchanger
@@ -25,7 +27,8 @@ func NewTokenExchanger() *TokenExchanger {
 }
 
 // ExchangeACRAccessToken exchanges an ARM access token to an ACR access token
-func (te *TokenExchanger) ExchangeACRAccessToken(armToken types.AccessToken, acrFQDN string) (types.AccessToken, error) {
+func (te *TokenExchanger) ExchangeACRAccessToken(ctx context.Context, armToken types.AccessToken, acrFQDN string) (types.AccessToken, error) {
+	logger := log.FromContext(ctx)
 	tenantID, err := armToken.GetTokenTenantId()
 	if err != nil {
 		return "", fmt.Errorf("failed to get tenant id from ARM token: %w", err)
@@ -46,7 +49,10 @@ func (te *TokenExchanger) ExchangeACRAccessToken(armToken types.AccessToken, acr
 	parameters.Add("service", ul.Hostname())
 	parameters.Add("tenant", tenantID)
 	parameters.Add("access_token", string(armToken))
-
+	logger.V(6).Info("grant_type: access_token")
+	logger.V(6).Info("service: %s", ul.Hostname())
+	logger.V(6).Info("tenant: %s", tenantID)
+	logger.V(6).Info("exchangeURL: %s", exchangeURL)
 	req, err := http.NewRequest("POST", exchangeURL, strings.NewReader(parameters.Encode()))
 	if err != nil {
 		return "", fmt.Errorf("failed to construct token exchange reqeust: %w", err)
