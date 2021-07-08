@@ -45,6 +45,7 @@ overrides="$(
   "spec": {
     "restartPolicy": "Never",
     "hostNetwork": true,
+    "nodeSelector": {"canipull": "yes"},
     "containers": [
       {
         "securityContext": {
