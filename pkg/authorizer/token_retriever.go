@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	armResource         = "https://management.azure.com/"
+	armResource         = "https://management.usgovcloudapi.net/"
 	msiMetadataEndpoint = "http://169.254.169.254/metadata/identity/oauth2/token"
 )
 
